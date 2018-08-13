@@ -1,0 +1,45 @@
+# depslib dependency file v1.0
+1534156125 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\main.cpp
+	<iostream>
+	"AlgorithmePriorite.h"
+	"DonneesCarrefour.h"
+	"Vecteur.h"
+
+1534172149 c:\users\felnecave\documents\simulations carrefour\algorithme c++\algorithmepriorite.h
+	<iostream>
+	"DonneesCarrefour.h"
+	"Vecteur.h"
+
+1534171290 c:\users\felnecave\documents\simulations carrefour\algorithme c++\donneescarrefour.h
+	<iostream>
+	"Matrice.h"
+	"Graphe.h"
+	"Vecteur.h"
+
+1534167808 c:\users\felnecave\documents\simulations carrefour\algorithme c++\vecteur.h
+	<iostream>
+
+1534173547 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\chemin.cpp
+	<algorithm>
+	<iostream>
+	<stdexcept>
+	"AlgorithmePriorite.h"
+
+1534167973 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\donnescarrefour.cpp
+	<iostream>
+	"DonneesCarrefour.h"
+
+1534172126 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\algorithmepriorite.cpp
+	<iostream>
+	"AlgorithmePriorite.h"
+	"DonneesCarrefour.h"
+	"Graphe.h"
+	"Vecteur.h"
+
+1534163261 c:\users\felnecave\documents\simulations carrefour\algorithme c++\matrice.h
+	"Vecteur.h"
+
+1534170278 c:\users\felnecave\documents\simulations carrefour\algorithme c++\graphe.h
+	"Matrice.h"
+	"Vecteur.h"
+
