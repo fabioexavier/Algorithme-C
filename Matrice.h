@@ -10,25 +10,25 @@ public:
     typedef typename Vecteur<T>::const_iterator const_iterator;
     typedef typename Vecteur<T>::size_type size_type;
 
-    Matrice() : nRows(0), nCols(0) {}
-    Matrice(size_type rows, size_type cols) : nRows(rows), nCols(cols) { initMatrice(); }
-    Matrice(size_type rows, size_type cols, const T& value) : nRows(rows), nCols(cols),
-                                                              vecElements(rows*cols, value) { initMatrice(); }
+    Matrice() : _rows(0), _cols(0) {}
+    Matrice(size_type rows, size_type cols) : _rows(rows), _cols(cols) { initMatrice(); }
+    Matrice(size_type rows, size_type cols, const T& value) : _rows(rows), _cols(cols),
+                                                              _elements(rows*cols, value) { initMatrice(); }
 
-    iterator begin() { return vecElements.begin(); }
-    iterator end() { return vecElements.end(); }
-    const_iterator begin() const { return vecElements.begin(); }
-    const_iterator end() const { return vecElements.end(); }
+    iterator begin() { return _elements.begin(); }
+    iterator end() { return _elements.end(); }
+    const_iterator begin() const { return _elements.begin(); }
+    const_iterator end() const { return _elements.end(); }
 
-    size_type rows() const { return nRows; }
-    size_type cols() const { return nCols; }
+    size_type rows() const { return _rows; }
+    size_type cols() const { return _cols; }
 
     T& element(size_type i, size_type j);
     const T& element(size_type i, size_type j) const;
 
 private:
-    size_type nRows, nCols;
-    Vecteur<T> vecElements;
+    size_type _rows, _cols;
+    Vecteur<T> _elements;
 
     void initMatrice();
 };
@@ -49,26 +49,26 @@ std::ostream& operator<<(std::ostream& os, const Matrice<T>& mat){
 
 template<class T>
 T& Matrice<T>::element(size_type i, size_type j){
-    if (i < nRows && j < nCols)
-        return vecElements[i*nCols + j];
+    if (i < _rows && j < _cols)
+        return _elements[i*_cols + j];
     else
         throw std::domain_error("Indice de la matrice hors limite");
 }
 template<class T>
 const T& Matrice<T>::element(size_type i, size_type j) const{
-    if (i < nRows && j < nCols)
-        return vecElements[i*nCols + j];
+    if (i < _rows && j < _cols)
+        return _elements[i*_cols + j];
     else
         throw std::domain_error("Indice de la matrice hors limite");
 }
 
 template<class T>
 void Matrice<T>::initMatrice(){
-    size_type numElements = nRows*nCols;
+    size_type numElements = _rows*_cols;
     if (numElements > Vecteur<T>::MAX_SIZE)
         throw std::domain_error("Nombre d'elements depasse taille max de la matrice");
     else{
-        vecElements.setSize(numElements);
+        _elements.setSize(numElements);
     }
 }
 

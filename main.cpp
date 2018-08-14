@@ -22,8 +22,8 @@ int main(){
                                                                   {8, 8, 0, 8},
                                                                   {5, 0, 7, 0} };
     Matrice<Interphase> matriceInterphases(numPhases, numPhases);
-    for (size_t i=0; i<numPhases; ++i)
-        for (size_t j=0; j<numPhases; ++j)
+    for (size_t i=0; i!=numPhases; ++i)
+        for (size_t j=0; j!=numPhases; ++j)
             matriceInterphases.element(i,j) = Interphase(i, j, dureeInterphases[i][j]);
 
     // Demandes Priorite
@@ -32,14 +32,23 @@ int main(){
     const Vecteur<DemandePriorite> vecDemandes(arrDemandes, sizeof(arrDemandes)/sizeof(arrDemandes[0]) );
 
     // Charge l'exemple de carrefour
-    Carrefour carrefour(vecPhases, matriceInterphases, vecDemandes, &vecPhases[0], 5);
+    Carrefour carrefour(vecPhases, matriceInterphases, vecDemandes, &vecPhases[1], 5);
 
     // Calcule les chemins possibles
-    Vecteur<Chemin> chemins = rechercheChemins(carrefour);
+    Vecteur<Chemin> cheminsPossibles = rechercheChemins(carrefour);
 
-    // Imprime les chemins calculés
-    for (Vecteur<Chemin>::const_iterator iter=chemins.begin(); iter!=chemins.end(); ++iter){
-        cout << *iter << endl;
+    // Analyse chacun des chemins avec la LP
+    Vecteur<Chemin> cheminsFaisables;
+    Vecteur<ResultatLP> resultatsFaisables;
+
+    for (Vecteur<Chemin>::const_iterator iChemin=cheminsPossibles.begin(); iChemin!=cheminsPossibles.end(); ++iChemin){
+        ResultatLP resultat = analyseLP(*iChemin, carrefour.demandesPriorite());
+        if (resultat){
+            cheminsFaisables.push_back(*iChemin);
+            resultatsFaisables.push_back(resultat);
+
+            cout << *iChemin << endl << resultat << endl << endl;
+        }
     }
 
     return 0;

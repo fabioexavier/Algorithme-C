@@ -1,16 +1,16 @@
 # depslib dependency file v1.0
-1534156125 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\main.cpp
+1534240181 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\main.cpp
 	<iostream>
 	"AlgorithmePriorite.h"
 	"DonneesCarrefour.h"
 	"Vecteur.h"
 
-1534172149 c:\users\felnecave\documents\simulations carrefour\algorithme c++\algorithmepriorite.h
+1534247914 c:\users\felnecave\documents\simulations carrefour\algorithme c++\algorithmepriorite.h
 	<iostream>
 	"DonneesCarrefour.h"
 	"Vecteur.h"
 
-1534171290 c:\users\felnecave\documents\simulations carrefour\algorithme c++\donneescarrefour.h
+1534240516 c:\users\felnecave\documents\simulations carrefour\algorithme c++\donneescarrefour.h
 	<iostream>
 	"Matrice.h"
 	"Graphe.h"
@@ -19,27 +19,130 @@
 1534167808 c:\users\felnecave\documents\simulations carrefour\algorithme c++\vecteur.h
 	<iostream>
 
-1534173547 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\chemin.cpp
-	<algorithm>
+1534238249 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\chemin.cpp
 	<iostream>
 	<stdexcept>
 	"AlgorithmePriorite.h"
 
-1534167973 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\donnescarrefour.cpp
-	<iostream>
-	"DonneesCarrefour.h"
+1534240529 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\donnescarrefour.cpp
 
-1534172126 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\algorithmepriorite.cpp
+1534235403 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\algorithmepriorite.cpp
+	<algorithm>
 	<iostream>
 	"AlgorithmePriorite.h"
 	"DonneesCarrefour.h"
 	"Graphe.h"
 	"Vecteur.h"
 
-1534163261 c:\users\felnecave\documents\simulations carrefour\algorithme c++\matrice.h
+1534235066 c:\users\felnecave\documents\simulations carrefour\algorithme c++\matrice.h
 	"Vecteur.h"
 
-1534170278 c:\users\felnecave\documents\simulations carrefour\algorithme c++\graphe.h
+1534235162 c:\users\felnecave\documents\simulations carrefour\algorithme c++\graphe.h
 	"Matrice.h"
 	"Vecteur.h"
+
+1534240017 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\analyselp.cpp
+	"AlgorithmePriorite.h"
+
+1534239962 source:c:\users\felnecave\documents\simulations carrefour\algorithme c++\recherchechemins.cpp
+	<algorithm>
+	<iostream>
+	"AlgorithmePriorite.h"
+	"DonneesCarrefour.h"
+	"Graphe.h"
+	"Vecteur.h"
+
+1534258558 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\analyselp.cpp
+	"AlgorithmePriorite.h"
+	"lp_lib.h"
+
+1534258572 c:\users\felnecave\documents\fabio\algorithme priorite\c++\algorithmepriorite.h
+	<iostream>
+	"DonneesCarrefour.h"
+	"Vecteur.h"
+
+1534240516 c:\users\felnecave\documents\fabio\algorithme priorite\c++\donneescarrefour.h
+	<iostream>
+	"Matrice.h"
+	"Graphe.h"
+	"Vecteur.h"
+
+1534235066 c:\users\felnecave\documents\fabio\algorithme priorite\c++\matrice.h
+	"Vecteur.h"
+
+1534167808 c:\users\felnecave\documents\fabio\algorithme priorite\c++\vecteur.h
+	<iostream>
+
+1534235162 c:\users\felnecave\documents\fabio\algorithme priorite\c++\graphe.h
+	"Matrice.h"
+	"Vecteur.h"
+
+1534238249 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\chemin.cpp
+	<iostream>
+	<stdexcept>
+	"AlgorithmePriorite.h"
+
+1534240529 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\donnescarrefour.cpp
+
+1534247935 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\main.cpp
+	<iostream>
+	"AlgorithmePriorite.h"
+	"DonneesCarrefour.h"
+	"Vecteur.h"
+
+1534239962 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\recherchechemins.cpp
+	<algorithm>
+	<iostream>
+	"AlgorithmePriorite.h"
+	"DonneesCarrefour.h"
+	"Graphe.h"
+	"Vecteur.h"
+
+1474234442 c:\users\felnecave\documents\fabio\algorithme priorite\c++\lpsolve\lp_lib.h
+	<sys/types.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	<stdio.h>
+	"lp_types.h"
+	"lp_utils.h"
+	<windows.h>
+	<dlfcn.h>
+	"lp_Hash.h"
+	"lp_matrix.h"
+	"lp_mipbb.h"
+	"lp_SOS.h"
+
+1462526724 c:\users\felnecave\documents\fabio\algorithme priorite\c++\lpsolve\lp_types.h
+	<windows.h>
+
+1462526724 c:\users\felnecave\documents\fabio\algorithme priorite\c++\lpsolve\lp_utils.h
+	"lp_fortify.h"
+	"lp_types.h"
+
+1462526714 c:\users\felnecave\documents\fabio\algorithme priorite\c++\lpsolve\lp_hash.h
+
+1462526716 c:\users\felnecave\documents\fabio\algorithme priorite\c++\lpsolve\lp_matrix.h
+	"lp_types.h"
+	"lp_utils.h"
+
+1462526716 c:\users\felnecave\documents\fabio\algorithme priorite\c++\lpsolve\lp_mipbb.h
+	"lp_types.h"
+	"lp_utils.h"
+
+1462526724 c:\users\felnecave\documents\fabio\algorithme priorite\c++\lpsolve\lp_sos.h
+	"lp_types.h"
+	"lp_utils.h"
+	"lp_matrix.h"
+
+1233540394 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\lp_solve_5.5\bfp\bfp_lusol\lusol\hbio.c
+	"hbio.h"
+	<string.h>
+	<math.h>
+	<ctype.h>
+
+1233540395 c:\users\felnecave\documents\fabio\algorithme priorite\c++\lp_solve_5.5\bfp\bfp_lusol\lusol\hbio.h
+	<stdio.h>
+	<stdlib.h>
+	<sys/types.h>
 

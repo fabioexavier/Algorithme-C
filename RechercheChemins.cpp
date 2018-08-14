@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 
 #include "AlgorithmePriorite.h"
@@ -5,12 +6,14 @@
 #include "Graphe.h"
 #include "Vecteur.h"
 
-using std::cout;         using std::endl;
+using std::cout;
+using std::endl;
+using std::find;
 
-// Recherche des chemins
 Graphe<Phase> calcGraphe(const Carrefour&);
 void rechercheRecursive(const Graphe<Phase>&, const Chemin&, const Vecteur<DemandePriorite>&, Vecteur<Chemin>&);
 bool finDeBranche(const Graphe<Phase>&, const Chemin&, const Vecteur<DemandePriorite>&);
+bool transitionPossible(const Chemin&, const Phase&, const Vecteur<DemandePriorite>&);
 
 Vecteur<Chemin> rechercheChemins(const Carrefour& carrefour){
     Vecteur<Chemin> cheminsTrouves;
@@ -30,7 +33,7 @@ Graphe<Phase> calcGraphe(const Carrefour& carrefour){
     Vecteur<Phase> sommets;
     for (size_t i=0; i!=carrefour.numPhases(); ++i){
         Phase phase = carrefour.phase(i);
-        if (carrefour.phase(i).solicitee || carrefour.phase(i).code != 0){
+        if (phase.solicitee || phase.code != 0){
             sommets.push_back(phase);
         }
     }
@@ -71,7 +74,7 @@ void rechercheRecursive(const Graphe<Phase>& graphe, const Chemin& chemin,
 
         // Répète pour chaque enfant vers lequel la transition est valide
         for (Vecteur<Phase>::const_iterator enfant=enfants.begin(); enfant!=enfants.end(); ++enfant){
-            if (chemin.transitionPossible(*enfant, demandesPriorite) ){
+            if (transitionPossible(chemin, *enfant, demandesPriorite) ){
                 Chemin cheminDerive = chemin;
                 cheminDerive.push_back(*enfant);
 
@@ -81,9 +84,10 @@ void rechercheRecursive(const Graphe<Phase>& graphe, const Chemin& chemin,
     }
 }
 
-// On est arrivé à la fin de la branche si la somme des minis est au moins égale au plus grand délai d'approche et
-// si le nombre de phases dans le chemin est au moins égale au nombre de sommets du graphe
 bool finDeBranche(const Graphe<Phase>& graphe, const Chemin& chemin, const Vecteur<DemandePriorite>& demandesPriorite){
+    // On est arrivé à la fin de la branche si la somme des minis est au moins égale au plus grand délai d'approche et
+    // si le nombre de phases dans le chemin est au moins égal au nombre de sommets du graphe
+
     // Calcule plus grand delai d'approche
     int maxDelai = 0;
     for (Vecteur<DemandePriorite>::const_iterator demande=demandesPriorite.begin();
@@ -96,3 +100,43 @@ bool finDeBranche(const Graphe<Phase>& graphe, const Chemin& chemin, const Vecte
 
     return false;
 }
+
+bool transitionPossible(const Chemin& chemin, const Phase& phase, const Vecteur<DemandePriorite>& demandesPriorite){
+    bool ret = true;
+    if (phase.escamotable){
+        // Phase ESC
+        if (phase.code == 0){
+            // Si le phase est deja dans le chemin
+            if (find(chemin.begin(), chemin.end(), phase) != chemin.end())
+                ret = false;
+        }
+        // Phase PEE ou PENE
+        else{
+            int code = phase.code;
+
+            // Nombre max admissible de phases avec ce code dans le chemin
+            // Admet une phase en plus si la première phase est PEE et a le même code
+            int maxPhases = chemin.phase(0).exclusive && (chemin.phase(0).code == code) ? 1 : 0;
+            // +1 pour chaque demande avec le même code
+            for (Vecteur<DemandePriorite>::const_iterator demande=demandesPriorite.begin();
+                                                          demande!=demandesPriorite.end(); ++demande){
+                if (demande->code == code)
+                    ++maxPhases;
+            }
+            // +1 pour chaque phase PENE distincte, solicitée, avec le même code et dans le chemin
+            for (Vecteur<Phase>::size_type i=0; i!=chemin.carrefour().numPhases(); ++i){
+                if (!chemin.carrefour().phase(i).exclusive &&
+                    chemin.carrefour().phase(i).solicitee &&
+                    chemin.carrefour().phase(i).code == phase.code &&
+                    find(chemin.begin(), chemin.end(), chemin.carrefour().phase(i)) != chemin.end() )
+                    ++maxPhases;
+            }
+
+            // Empêche la transition si le nombre max de phases est déjà atteint
+            if (chemin.comptageCode(code) == maxPhases)
+                ret = false;
+        }
+    }
+    return ret;
+}
+

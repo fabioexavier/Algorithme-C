@@ -32,13 +32,14 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="AlgorithmePriorite.cpp" />
 		<Unit filename="AlgorithmePriorite.h" />
+		<Unit filename="AnalyseLP.cpp" />
 		<Unit filename="Chemin.cpp" />
 		<Unit filename="DonneesCarrefour.h" />
 		<Unit filename="DonnesCarrefour.cpp" />
 		<Unit filename="Graphe.h" />
 		<Unit filename="Matrice.h" />
+		<Unit filename="RechercheChemins.cpp" />
 		<Unit filename="Vecteur.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>

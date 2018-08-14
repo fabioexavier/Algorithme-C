@@ -9,12 +9,12 @@
 
 // Phase
 struct Phase{
-    unsigned int numero;
-    unsigned int dureeMinimale;
-    unsigned int dureeNominale;
-    unsigned int dureeMaximale;
+    int numero;
+    int dureeMinimale;
+    int dureeNominale;
+    int dureeMaximale;
     bool escamotable;
-    unsigned int code;
+    int code;
     bool exclusive;
     bool solicitee;
 
@@ -27,8 +27,7 @@ struct Phase{
               exclusive(false),
               solicitee(true) {}
 
-    Phase(unsigned int n, unsigned int dMin, unsigned int dNom, unsigned int dMax, bool esc, unsigned int c,
-          bool exc, bool sol) :
+    Phase(int n, int dMin, int dNom, int dMax, bool esc, int c, bool exc, bool sol) :
           numero(n),
           dureeMinimale(dMin),
           dureeNominale(dNom),
@@ -39,20 +38,28 @@ struct Phase{
           solicitee(sol){}
 
 };
-std::ostream& operator<<(std::ostream&, const Phase&);
-bool operator==(const Phase&, const Phase&);
+inline std::ostream& operator<<(std::ostream& os, const Phase& p){
+    os << "Phase " << p.numero;
+    return os;
+}
+inline operator==(const Phase& p1, const Phase& p2){
+    return p1.numero == p2.numero;
+}
 
 // Interphase
 struct Interphase{
-    unsigned int origine;
-    unsigned int destination;
-    unsigned int duree;
+    int origine;
+    int destination;
+    int duree;
 
     Interphase() : origine(0), destination(0), duree(0) {}
-    Interphase(unsigned int ori, unsigned int dest, unsigned int dur) :
+    Interphase(int ori, int dest, int dur) :
                origine(ori), destination(dest), duree(dur) {}
 };
-std::ostream& operator<<(std::ostream&, const Interphase&);
+inline std::ostream& operator<<(std::ostream& os, const Interphase& ip){
+    os << "Interphase (" << ip.origine << ", " << ip.destination << ")";
+    return os;
+}
 
 
 // LigneDeFeu
@@ -60,15 +67,18 @@ std::ostream& operator<<(std::ostream&, const Interphase&);
 // DemandePriorite
 struct DemandePriorite{
     int delaiApproche;
-    unsigned int code;
+    int code;
 
     DemandePriorite() : delaiApproche(0),
                         code(0) {}
 
-    DemandePriorite(int d, unsigned int c) : delaiApproche(d),
+    DemandePriorite(int d, int c) : delaiApproche(d),
                                              code(c) {}
 };
-std::ostream& operator<<(std::ostream&, const DemandePriorite&);
+inline std::ostream& operator<<(std::ostream& os, const DemandePriorite& d){
+    os << "Delai " << d.delaiApproche << ", Code " << d.code;
+    return os;
+}
 
 // Carrefour
 class Carrefour{
@@ -77,30 +87,30 @@ public:
                   _tempsEcoule(0) {}
 
     Carrefour(const Vecteur<Phase>& p, const Matrice<Interphase>& mi, const Vecteur<DemandePriorite>& d,
-              const Phase* pa, unsigned int te) :
-              vecteurPhases(p),
-              matriceInterphases(mi),
-              vecteurDemandes(d),
+              const Phase* pa, int te) :
+              _phases(p),
+              _interphases(mi),
+              _demandes(d),
               _phaseActuelle(pa),
               _tempsEcoule(te) {}
 
-    const Phase& phase(unsigned int i) const { return vecteurPhases[i]; }
-    size_t numPhases() const { return vecteurPhases.size(); }
+    const Phase& phase(unsigned int i) const { return _phases[i]; }
+    Vecteur<Phase>::size_type numPhases() const { return _phases.size(); }
 
-    const Interphase& interphase(unsigned int i, unsigned int j) const { return matriceInterphases.element(i,j); }
+    const Interphase& interphase(unsigned int i, unsigned int j) const { return _interphases.element(i,j); }
     const Interphase& interphase(const Phase& p1, const Phase& p2) const { return interphase(p1.numero, p2.numero); }
 
-    const Vecteur<DemandePriorite>& demandesPriorite() const { return vecteurDemandes; }
+    const Vecteur<DemandePriorite>& demandesPriorite() const { return _demandes; }
 
     const Phase& phaseActuelle() const { return *_phaseActuelle; }
-    unsigned int tempsEcoule() const { return _tempsEcoule; }
+    int tempsEcoule() const { return _tempsEcoule; }
 
 private:
-    Vecteur<Phase> vecteurPhases;
-    Matrice<Interphase> matriceInterphases;
-    Vecteur<DemandePriorite> vecteurDemandes;
+    Vecteur<Phase> _phases;
+    Matrice<Interphase> _interphases;
+    Vecteur<DemandePriorite> _demandes;
     const Phase *_phaseActuelle;
-    unsigned int _tempsEcoule;
+    int _tempsEcoule;
 };
 
 #endif // DONNEES_CARREFOUR_H
