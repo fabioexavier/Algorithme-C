@@ -39,6 +39,7 @@ std::ostream& operator<<(std::ostream&, const Chemin&);
 
 struct ResultatLP{
 public:
+    static const size_t MAX_SIZE = Vecteur<int>::MAX_SIZE;
     bool optimumTrouve;
     Vecteur<int> durees;
     Vecteur<int> deviations;
@@ -46,12 +47,12 @@ public:
 
     ResultatLP() : optimumTrouve(false) {}
     ResultatLP(bool ot, const Vecteur<int>& dur, const Vecteur<int>& dev, const Vecteur<int>& ret) :
-        optimumTrouve(false),
+        optimumTrouve(ot),
         durees(dur),
         deviations(dev),
         retards(ret) {}
 
-    operator bool(){ return !optimumTrouve; }
+    operator bool(){ return optimumTrouve; }
 };
 inline std::ostream& operator<<(std::ostream& os, const ResultatLP& resultat){
     os << "Durees: " << resultat.durees << std::endl;
@@ -60,9 +61,15 @@ inline std::ostream& operator<<(std::ostream& os, const ResultatLP& resultat){
     return os;
 }
 
-// Fonctions
+// Fonctions Principales
 Vecteur<Chemin> rechercheChemins(const Carrefour&);
 ResultatLP analyseLP(const Chemin&, const Vecteur<DemandePriorite>&);
+
+// Fonctions Auxiliaires
+Graphe<Phase> calcGraphe(const Carrefour&);
+void rechercheRecursive(const Graphe<Phase>&, const Chemin&, const Vecteur<DemandePriorite>&, Vecteur<Chemin>&);
+bool finDeBranche(const Graphe<Phase>&, const Chemin&, const Vecteur<DemandePriorite>&);
+bool transitionPossible(const Chemin&, const Phase&, const Vecteur<DemandePriorite>&);
 
 #endif // ALGORITHME_PRIORITE_H
 

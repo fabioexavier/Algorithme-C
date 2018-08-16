@@ -2,6 +2,7 @@
 #define VECTEUR_H
 
 #include <iostream>
+#include <stdexcept>
 
 template<class T>
 class Vecteur{
@@ -38,6 +39,7 @@ public:
 
     size_type size() const { return fin - data; }
     void setSize(size_type);
+    void clear() { fin = data; }
     void push_back(const T&);
     size_type index(const T&) const;
 

@@ -42,7 +42,7 @@ inline std::ostream& operator<<(std::ostream& os, const Phase& p){
     os << "Phase " << p.numero;
     return os;
 }
-inline operator==(const Phase& p1, const Phase& p2){
+inline bool operator==(const Phase& p1, const Phase& p2){
     return p1.numero == p2.numero;
 }
 

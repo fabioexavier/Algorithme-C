@@ -10,11 +10,6 @@ using std::cout;
 using std::endl;
 using std::find;
 
-Graphe<Phase> calcGraphe(const Carrefour&);
-void rechercheRecursive(const Graphe<Phase>&, const Chemin&, const Vecteur<DemandePriorite>&, Vecteur<Chemin>&);
-bool finDeBranche(const Graphe<Phase>&, const Chemin&, const Vecteur<DemandePriorite>&);
-bool transitionPossible(const Chemin&, const Phase&, const Vecteur<DemandePriorite>&);
-
 Vecteur<Chemin> rechercheChemins(const Carrefour& carrefour){
     Vecteur<Chemin> cheminsTrouves;
 
@@ -41,20 +36,20 @@ Graphe<Phase> calcGraphe(const Carrefour& carrefour){
     // Vérifie les transitions possibles et assemble la matrice
     Matrice<bool> matriceTransitions(sommets.size(), sommets.size(), false);
 
-    for (Vecteur<Phase>::const_iterator iterActuelle=sommets.begin(); iterActuelle!=sommets.end(); ++iterActuelle){
-        Vecteur<Phase>::const_iterator iterSuivante = sommets.cyclicNext(iterActuelle);
+    for (Vecteur<Phase>::const_iterator iActuelle=sommets.begin(); iActuelle!=sommets.end(); ++iActuelle){
+        Vecteur<Phase>::const_iterator iSuivante = sommets.cyclicNext(iActuelle);
 
         bool continuer;
         do {
             // Empêche des transitions entre deux phases exclusives de même code
-            if ( !(iterActuelle->exclusive && iterSuivante->exclusive && iterActuelle->code == iterSuivante->code) ){
-                size_t indexActuelle = iterActuelle - sommets.begin();
-                size_t indexSuivante = iterSuivante - sommets.begin();
+            if ( !(iActuelle->exclusive && iSuivante->exclusive && iActuelle->code == iSuivante->code) ){
+                size_t indexActuelle = iActuelle - sommets.begin();
+                size_t indexSuivante = iSuivante - sommets.begin();
                 matriceTransitions.element(indexActuelle, indexSuivante) = true;
             }
-            continuer = iterSuivante->escamotable;
-            iterSuivante = sommets.cyclicNext(iterSuivante);
-        } while (continuer && iterSuivante != iterActuelle);
+            continuer = iSuivante->escamotable;
+            iSuivante = sommets.cyclicNext(iSuivante);
+        } while (continuer && iSuivante != iActuelle);
     }
 
     // Crée l'objet graphe
@@ -69,14 +64,14 @@ void rechercheRecursive(const Graphe<Phase>& graphe, const Chemin& chemin,
         cheminsTrouves.push_back(chemin);
 
     // Teste si on est arrivé à la fin de la branche
-    if (!finDeBranche(graphe, chemin, demandesPriorite)){
-        Vecteur<Phase> enfants = graphe.enfants(chemin.phase(-1));
+    if (!finDeBranche(graphe, chemin, demandesPriorite) ){
+        Vecteur<Phase> enfants = graphe.enfants(chemin.phase(-1) );
 
         // Répète pour chaque enfant vers lequel la transition est valide
-        for (Vecteur<Phase>::const_iterator enfant=enfants.begin(); enfant!=enfants.end(); ++enfant){
-            if (transitionPossible(chemin, *enfant, demandesPriorite) ){
+        for (Vecteur<Phase>::const_iterator iEnfant=enfants.begin(); iEnfant!=enfants.end(); ++iEnfant){
+            if (transitionPossible(chemin, *iEnfant, demandesPriorite) ){
                 Chemin cheminDerive = chemin;
-                cheminDerive.push_back(*enfant);
+                cheminDerive.push_back(*iEnfant);
 
                 rechercheRecursive(graphe, cheminDerive, demandesPriorite, cheminsTrouves);
             }
@@ -90,25 +85,23 @@ bool finDeBranche(const Graphe<Phase>& graphe, const Chemin& chemin, const Vecte
 
     // Calcule plus grand delai d'approche
     int maxDelai = 0;
-    for (Vecteur<DemandePriorite>::const_iterator demande=demandesPriorite.begin();
-                                                  demande!=demandesPriorite.end(); ++demande){
-        if (demande->delaiApproche > maxDelai)
-            maxDelai = demande->delaiApproche;
+    for (Vecteur<DemandePriorite>::const_iterator iDemande=demandesPriorite.begin();
+                                                  iDemande!=demandesPriorite.end(); ++iDemande){
+        if (iDemande->delaiApproche > maxDelai)
+            maxDelai = iDemande->delaiApproche;
     }
 
     return (chemin.sommeMin() >= maxDelai) && (chemin.size() >= graphe.sommets().size() );
-
-    return false;
 }
 
 bool transitionPossible(const Chemin& chemin, const Phase& phase, const Vecteur<DemandePriorite>& demandesPriorite){
-    bool ret = true;
+    bool transitionPossible = true;
     if (phase.escamotable){
         // Phase ESC
         if (phase.code == 0){
             // Si le phase est deja dans le chemin
             if (find(chemin.begin(), chemin.end(), phase) != chemin.end())
-                ret = false;
+                transitionPossible = false;
         }
         // Phase PEE ou PENE
         else{
@@ -127,16 +120,16 @@ bool transitionPossible(const Chemin& chemin, const Phase& phase, const Vecteur<
             for (Vecteur<Phase>::size_type i=0; i!=chemin.carrefour().numPhases(); ++i){
                 if (!chemin.carrefour().phase(i).exclusive &&
                     chemin.carrefour().phase(i).solicitee &&
-                    chemin.carrefour().phase(i).code == phase.code &&
-                    find(chemin.begin(), chemin.end(), chemin.carrefour().phase(i)) != chemin.end() )
+                    chemin.carrefour().phase(i).code == code &&
+                    find(chemin.begin(), chemin.end(), chemin.carrefour().phase(i) ) != chemin.end() )
                     ++maxPhases;
             }
 
             // Empêche la transition si le nombre max de phases est déjà atteint
             if (chemin.comptageCode(code) == maxPhases)
-                ret = false;
+                transitionPossible = false;
         }
     }
-    return ret;
+    return transitionPossible;
 }
 

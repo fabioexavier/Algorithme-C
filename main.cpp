@@ -32,7 +32,7 @@ int main(){
     const Vecteur<DemandePriorite> vecDemandes(arrDemandes, sizeof(arrDemandes)/sizeof(arrDemandes[0]) );
 
     // Charge l'exemple de carrefour
-    Carrefour carrefour(vecPhases, matriceInterphases, vecDemandes, &vecPhases[1], 5);
+    Carrefour carrefour(vecPhases, matriceInterphases, vecDemandes, &vecPhases[0], 5);
 
     // Calcule les chemins possibles
     Vecteur<Chemin> cheminsPossibles = rechercheChemins(carrefour);
