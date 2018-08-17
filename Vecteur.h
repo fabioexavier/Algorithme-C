@@ -11,12 +11,12 @@ public:
 
     typedef T* iterator;
     typedef const T* const_iterator;
-    typedef size_t size_type;
 
     Vecteur() : fin(data), limite(data+MAX_SIZE) {}
-    Vecteur(size_type, const T&);
+    explicit Vecteur(size_t n) : fin(data+n), limite(data+MAX_SIZE) {}
+    Vecteur(size_t, const T&);
     Vecteur(const Vecteur&);
-    Vecteur(const T[], size_type);
+    Vecteur(const T[], size_t);
     Vecteur& operator=(const Vecteur&);
 
     T& operator[](int);
@@ -37,11 +37,12 @@ public:
         return iter;
     }
 
-    size_type size() const { return fin - data; }
-    void setSize(size_type);
+    size_t size() const { return fin - data; }
+    void setSize(size_t);
     void clear() { fin = data; }
     void push_back(const T&);
-    size_type index(const T&) const;
+    size_t index(const T&) const;
+    T somme() const;
 
 
 private:
@@ -52,7 +53,7 @@ private:
 
 // Constructeurs
 template<class T>
-Vecteur<T>::Vecteur(size_type len, const T& value) : fin(data), limite(data+MAX_SIZE){
+Vecteur<T>::Vecteur(size_t len, const T& value) : fin(data), limite(data+MAX_SIZE){
     if (len > MAX_SIZE)
         throw std::domain_error("Longueur depasse taille max du vecteur");
     else{
@@ -69,7 +70,7 @@ Vecteur<T>::Vecteur(const Vecteur& v) : fin(data+v.size()), limite(data+MAX_SIZE
 }
 
 template<class T>
-Vecteur<T>::Vecteur(const T arr[], size_type len) : limite(data+MAX_SIZE){
+Vecteur<T>::Vecteur(const T arr[], size_t len) : limite(data+MAX_SIZE){
     if (len > MAX_SIZE)
         throw std::domain_error("Longueur depasse taille max du vecteur");
     else{
@@ -118,7 +119,7 @@ std::ostream& operator<<(std::ostream& os, const Vecteur<T>& vec){
 
 // Fonctions
 template<class T>
-void Vecteur<T>::setSize(size_type n){
+void Vecteur<T>::setSize(size_t n){
     if (n > MAX_SIZE)
         throw std::domain_error("Longueur plus grande que le max du vecteur");
     else
@@ -134,12 +135,21 @@ void Vecteur<T>::push_back(const T& element){
 }
 
 template<class T>
-typename Vecteur<T>::size_type Vecteur<T>::index(const T& element) const{
-    for (size_type i=0; i!=size(); ++i){
+size_t Vecteur<T>::index(const T& element) const{
+    for (size_t i=0; i!=size(); ++i){
         if (data[i] == element)
             return i;
     }
     throw std::runtime_error("Element pas present dans le vecteur");
+}
+
+template <class T>
+T Vecteur<T>::somme() const{
+    T somme = 0;
+    for (Vecteur<T>::const_iterator iter=begin(); iter!=end(); ++iter)
+        somme += *iter;
+
+    return somme;
 }
 
 #endif // VECTEUR_H

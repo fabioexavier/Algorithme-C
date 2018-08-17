@@ -117,7 +117,7 @@ bool transitionPossible(const Chemin& chemin, const Phase& phase, const Vecteur<
                     ++maxPhases;
             }
             // +1 pour chaque phase PENE distincte, solicitée, avec le même code et dans le chemin
-            for (Vecteur<Phase>::size_type i=0; i!=chemin.carrefour().numPhases(); ++i){
+            for (size_t i=0; i!=chemin.carrefour().numPhases(); ++i){
                 if (!chemin.carrefour().phase(i).exclusive &&
                     chemin.carrefour().phase(i).solicitee &&
                     chemin.carrefour().phase(i).code == code &&

@@ -14,7 +14,7 @@ Chemin::Chemin(const Carrefour& c) : _pCarrefour(&c){
 }
 
 int Chemin::comptageCode(int c) const {
-    Vecteur<int>::size_type code = c;
+    size_t code = c;
 
     if (code >= _comptageCodes.MAX_SIZE)
         throw domain_error("Code hors limite");
@@ -26,13 +26,13 @@ int Chemin::comptageCode(int c) const {
 }
 
 int Chemin::incrementeCode(int c){
-    Vecteur<int>::size_type code = c;
+    size_t code = c;
 
     if (code >= _comptageCodes.MAX_SIZE)
         throw domain_error("Code hors limite");
 
     if (code >= _comptageCodes.size() ){
-        Vecteur<int>::size_type oldSize = _comptageCodes.size();
+        size_t oldSize = _comptageCodes.size();
         _comptageCodes.setSize(code+1);
         for (size_t i=oldSize; i<code+1; i++)
             _comptageCodes[i] = 0;

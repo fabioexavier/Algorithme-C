@@ -8,11 +8,10 @@ class Matrice{
 public:
     typedef typename Vecteur<T>::iterator iterator;
     typedef typename Vecteur<T>::const_iterator const_iterator;
-    typedef typename Vecteur<T>::size_type size_type;
 
     Matrice() : _rows(0), _cols(0) {}
-    Matrice(size_type rows, size_type cols) : _rows(rows), _cols(cols) { initMatrice(); }
-    Matrice(size_type rows, size_type cols, const T& value) : _rows(rows), _cols(cols),
+    Matrice(size_t rows, size_t cols) : _rows(rows), _cols(cols) { initMatrice(); }
+    Matrice(size_t rows, size_t cols, const T& value) : _rows(rows), _cols(cols),
                                                               _elements(rows*cols, value) { initMatrice(); }
 
     iterator begin() { return _elements.begin(); }
@@ -20,14 +19,14 @@ public:
     const_iterator begin() const { return _elements.begin(); }
     const_iterator end() const { return _elements.end(); }
 
-    size_type rows() const { return _rows; }
-    size_type cols() const { return _cols; }
+    size_t rows() const { return _rows; }
+    size_t cols() const { return _cols; }
 
-    T& element(size_type i, size_type j);
-    const T& element(size_type i, size_type j) const;
+    T& element(size_t i, size_t j);
+    const T& element(size_t i, size_t j) const;
 
 private:
-    size_type _rows, _cols;
+    size_t _rows, _cols;
     Vecteur<T> _elements;
 
     void initMatrice();
@@ -48,14 +47,14 @@ std::ostream& operator<<(std::ostream& os, const Matrice<T>& mat){
 }
 
 template<class T>
-T& Matrice<T>::element(size_type i, size_type j){
+T& Matrice<T>::element(size_t i, size_t j){
     if (i < _rows && j < _cols)
         return _elements[i*_cols + j];
     else
         throw std::domain_error("Indice de la matrice hors limite");
 }
 template<class T>
-const T& Matrice<T>::element(size_type i, size_type j) const{
+const T& Matrice<T>::element(size_t i, size_t j) const{
     if (i < _rows && j < _cols)
         return _elements[i*_cols + j];
     else
@@ -64,7 +63,7 @@ const T& Matrice<T>::element(size_type i, size_type j) const{
 
 template<class T>
 void Matrice<T>::initMatrice(){
-    size_type numElements = _rows*_cols;
+    size_t numElements = _rows*_cols;
     if (numElements > Vecteur<T>::MAX_SIZE)
         throw std::domain_error("Nombre d'elements depasse taille max de la matrice");
     else{

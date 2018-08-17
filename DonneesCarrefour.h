@@ -2,6 +2,7 @@
 #define DONNEES_CARREFOUR_H
 
 #include <iostream>
+#include <string>
 
 #include "Matrice.h"
 #include "Graphe.h"
@@ -10,6 +11,7 @@
 // Phase
 struct Phase{
     int numero;
+    Vecteur<bool> lignesOuvertes;
     int dureeMinimale;
     int dureeNominale;
     int dureeMaximale;
@@ -17,17 +19,12 @@ struct Phase{
     int code;
     bool exclusive;
     bool solicitee;
+    int marge;
+    int intervalle;
 
-    Phase() : numero(0),
-              dureeMinimale(0),
-              dureeNominale(0),
-              dureeMaximale(0),
-              escamotable(false),
-              code(0),
-              exclusive(false),
-              solicitee(true) {}
+    Phase() {}
 
-    Phase(int n, int dMin, int dNom, int dMax, bool esc, int c, bool exc, bool sol) :
+    Phase(int n, std::string lignes, int dMin, int dNom, int dMax, bool esc, int c, bool exc, bool sol, int mar, int inter) :
           numero(n),
           dureeMinimale(dMin),
           dureeNominale(dNom),
@@ -35,8 +32,23 @@ struct Phase{
           escamotable(esc),
           code(c),
           exclusive(exc),
-          solicitee(sol){}
+          solicitee(sol),
+          marge(mar),
+          intervalle (inter) {
 
+        for (std::string::const_iterator iChar = lignes.begin(); iChar != lignes.end(); ++iChar){
+            switch(*iChar){
+            case 'T':
+                lignesOuvertes.push_back(true);
+                break;
+            case 'F':
+                lignesOuvertes.push_back(false);
+                break;
+            default:
+                throw std::domain_error(" Inicialisation incorrecte d'objet phase");
+            }
+        }
+    }
 };
 inline std::ostream& operator<<(std::ostream& os, const Phase& p){
     os << "Phase " << p.numero;
@@ -63,6 +75,18 @@ inline std::ostream& operator<<(std::ostream& os, const Interphase& ip){
 
 
 // LigneDeFeu
+struct LigneDeFeu{
+    bool solicitee;
+    bool rouge;
+    int rougeAccumule;
+
+    LigneDeFeu() {}
+
+    LigneDeFeu(bool sol, bool rg, int rgAcc) :
+        solicitee(sol),
+        rouge(rg),
+        rougeAccumule(rgAcc) {}
+};
 
 // DemandePriorite
 struct DemandePriorite{
@@ -94,10 +118,16 @@ public:
               _phaseActuelle(pa),
               _tempsEcoule(te) {}
 
-    const Phase& phase(unsigned int i) const { return _phases[i]; }
-    Vecteur<Phase>::size_type numPhases() const { return _phases.size(); }
+    void loadExemple(int);
 
-    const Interphase& interphase(unsigned int i, unsigned int j) const { return _interphases.element(i,j); }
+    const LigneDeFeu& ligne(size_t i) const { return _lignes[i]; }
+    size_t numLignes() const { return _lignes.size(); }
+
+    const Phase& phase(size_t i) const { return _phases[i]; }
+    size_t numPhases() const { return _phases.size(); }
+    const Phase& phaseSuivante(const Phase& phase) const { return _phases[(phase.numero+1) % numPhases()]; }
+
+    const Interphase& interphase(size_t i, size_t j) const { return _interphases.element(i,j); }
     const Interphase& interphase(const Phase& p1, const Phase& p2) const { return interphase(p1.numero, p2.numero); }
 
     const Vecteur<DemandePriorite>& demandesPriorite() const { return _demandes; }
@@ -106,6 +136,7 @@ public:
     int tempsEcoule() const { return _tempsEcoule; }
 
 private:
+    Vecteur<LigneDeFeu> _lignes;
     Vecteur<Phase> _phases;
     Matrice<Interphase> _interphases;
     Vecteur<DemandePriorite> _demandes;

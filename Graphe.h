@@ -22,8 +22,8 @@ template<class T>
 Vecteur<T> Graphe<T>::enfants(const T& sommet) const{
     Vecteur<T> enfants;
 
-    typename Vecteur<T>::size_type i = sommets().index(sommet);
-    for (typename Vecteur<T>::size_type j=0; j!=sommets().size(); ++j){
+    size_t i = sommets().index(sommet);
+    for (size_t j=0; j!=sommets().size(); ++j){
         if (_transitions.element(i,j) == true)
             enfants.push_back(sommets()[j]);
     }
