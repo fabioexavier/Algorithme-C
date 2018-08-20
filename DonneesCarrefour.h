@@ -98,6 +98,8 @@ struct DemandePriorite{
 
     DemandePriorite(int d, int c) : delaiApproche(d),
                                              code(c) {}
+
+    static bool compareDelai(const DemandePriorite& a, const DemandePriorite& b) { return a.delaiApproche < b.delaiApproche; }
 };
 inline std::ostream& operator<<(std::ostream& os, const DemandePriorite& d){
     os << "Delai " << d.delaiApproche << ", Code " << d.code;

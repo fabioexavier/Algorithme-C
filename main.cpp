@@ -18,11 +18,11 @@ int main(){
     Vecteur<Chemin> cheminsPossibles = rechercheChemins(carrefour);
 
     // Analyse chacun des chemins avec la LP
-    Vecteur< Vecteur<Chemin>::const_iterator> iCheminsFaisables;
+    Vecteur< Vecteur<Chemin>::const_iterator > iCheminsFaisables;
     Vecteur<ResultatLP> resultatsFaisables;
 
     for (Vecteur<Chemin>::const_iterator iChemin=cheminsPossibles.begin(); iChemin!=cheminsPossibles.end(); ++iChemin){
-        ResultatLP resultat = analyseLP(*iChemin, carrefour.demandesPriorite() );
+        ResultatLP resultat = analyseLP(*iChemin);
         if (resultat){
             iCheminsFaisables.push_back(iChemin);
             resultatsFaisables.push_back(resultat);
@@ -36,7 +36,8 @@ int main(){
 
     Vecteur<Chemin>::const_iterator iMeilleurChemin = iCheminsFaisables[indexMin];
 
-    cout << endl << "Meilleur Chemin: " << endl << *iMeilleurChemin << endl << *iterMin << endl << endl;
+    cout << endl << "Meilleur Chemin: " << endl << *iMeilleurChemin << endl << *iterMin << endl
+         << "Chemins Analyses: " << cheminsPossibles.size() << endl << endl;
 
     return 0;
 }

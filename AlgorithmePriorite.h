@@ -27,7 +27,8 @@ public:
     size_t size() const { return _phases.size(); }
     void push_back(const Phase&);
 
-    bool valide(const Vecteur<DemandePriorite>&) const;
+    bool valide() const;
+    bool transitionPossible(const Phase&) const;
 
 private:
     Vecteur<Phase> _phases;
@@ -65,13 +66,12 @@ inline std::ostream& operator<<(std::ostream& os, const ResultatLP& resultat){
 
 // Fonctions Principales
 Vecteur<Chemin> rechercheChemins(const Carrefour&);
-ResultatLP analyseLP(const Chemin&, const Vecteur<DemandePriorite>&);
+ResultatLP analyseLP(const Chemin&);
 
 // Fonctions Auxiliaires
 Graphe<Phase> calcGraphe(const Carrefour&);
-void rechercheRecursive(const Graphe<Phase>&, const Chemin&, const Vecteur<DemandePriorite>&, Vecteur<Chemin>&);
-bool finDeBranche(const Graphe<Phase>&, const Chemin&, const Vecteur<DemandePriorite>&);
-bool transitionPossible(const Chemin&, const Phase&, const Vecteur<DemandePriorite>&);
+void rechercheRecursive(const Graphe<Phase>&, const Chemin&, Vecteur<Chemin>&);
+bool finDeBranche(const Graphe<Phase>&, const Chemin&);
 
 #endif // ALGORITHME_PRIORITE_H
 
