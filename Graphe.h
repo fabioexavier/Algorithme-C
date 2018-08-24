@@ -23,8 +23,7 @@ Vecteur<T> Graphe<T>::enfants(const T& sommet) const{
     Vecteur<T> enfants;
 
     size_t i = sommets().index(sommet);
-    size_t nSom = sommets().size();
-    for (size_t j = (i+1)%nSom ; j != i; j = (j+1)%nSom ){
+    for (size_t j=0; j!=sommets().size(); ++j){
         if (_transitions.element(i,j) == true)
             enfants.push_back(sommets()[j]);
     }

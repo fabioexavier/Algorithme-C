@@ -76,13 +76,15 @@ inline std::ostream& operator<<(std::ostream& os, const Interphase& ip){
 
 // LigneDeFeu
 struct LigneDeFeu{
-    bool rougeEtSolicitee;
+    bool solicitee;
+    bool rouge;
     int rougeAccumule;
 
     LigneDeFeu() {}
 
-    LigneDeFeu(bool rs, int rgAcc) :
-        rougeEtSolicitee(rs),
+    LigneDeFeu(bool sol, bool rg, int rgAcc) :
+        solicitee(sol),
+        rouge(rg),
         rougeAccumule(rgAcc) {}
 };
 
@@ -100,7 +102,7 @@ struct DemandePriorite{
     static bool compareDelai(const DemandePriorite& a, const DemandePriorite& b) { return a.delaiApproche < b.delaiApproche; }
 };
 inline std::ostream& operator<<(std::ostream& os, const DemandePriorite& d){
-    os << "(" << d.delaiApproche << ", " << d.code << ")";
+    os << "Delai " << d.delaiApproche << ", Code " << d.code;
     return os;
 }
 

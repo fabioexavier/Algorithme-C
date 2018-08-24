@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <chrono>
 #include <iostream>
 
 #include "AlgorithmePriorite.h"
@@ -15,9 +14,6 @@ int main(){
     Carrefour carrefour;
     carrefour.loadExemple(1);
 
-    // Début mésure de temps
-    auto start = std::chrono::high_resolution_clock::now();
-
     // Calcule les chemins possibles
     Vecteur<Chemin> cheminsPossibles = rechercheChemins(carrefour);
 
@@ -26,13 +22,12 @@ int main(){
     Vecteur<ResultatLP> resultatsFaisables;
 
     for (Vecteur<Chemin>::const_iterator iChemin=cheminsPossibles.begin(); iChemin!=cheminsPossibles.end(); ++iChemin){
-
         ResultatLP resultat = analyseLP(*iChemin);
         if (resultat){
             iCheminsFaisables.push_back(iChemin);
             resultatsFaisables.push_back(resultat);
         }
-//        cout << *iChemin << endl << resultat << endl << endl;
+        cout << *iChemin << endl << resultat << endl << endl;
     }
 
     // Trouve le meilleur chemin
@@ -41,15 +36,8 @@ int main(){
 
     Vecteur<Chemin>::const_iterator iMeilleurChemin = iCheminsFaisables[indexMin];
 
-    // Fin mésure de temps
-    auto finish = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = finish - start;
-
-    cout << carrefour.demandesPriorite() << endl << endl
-         << *iMeilleurChemin << endl << endl
-         << *iterMin << endl << endl
-         << "Chemins Analyses: " << cheminsPossibles.size() << endl << endl
-         << "Temps: " << elapsed.count() << " s" << endl << endl;
+    cout << endl << "Meilleur Chemin: " << endl << *iMeilleurChemin << endl << *iterMin << endl
+         << "Chemins Analyses: " << cheminsPossibles.size() << endl << endl;
 
     return 0;
 }
