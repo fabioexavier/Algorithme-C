@@ -1,0 +1,58 @@
+# depslib dependency file v1.0
+1535012690 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\analyselp.cpp
+	<algorithm>
+	<iostream>
+	<stdexcept>
+	<stdio.h>
+	"AlgorithmePriorite.h"
+	"Vecteur.h"
+	"lp_lib.h"
+
+1535012690 c:\users\felnecave\documents\fabio\algorithme priorite\c++\algorithmepriorite.h
+	<iostream>
+	"DonneesCarrefour.h"
+	"Vecteur.h"
+
+1535012690 c:\users\felnecave\documents\fabio\algorithme priorite\c++\donneescarrefour.h
+	<iostream>
+	<string>
+	"Matrice.h"
+	"Graphe.h"
+	"Vecteur.h"
+
+1535012690 c:\users\felnecave\documents\fabio\algorithme priorite\c++\matrice.h
+	"Vecteur.h"
+
+1535012690 c:\users\felnecave\documents\fabio\algorithme priorite\c++\vecteur.h
+	<iostream>
+	<stdexcept>
+
+1535012690 c:\users\felnecave\documents\fabio\algorithme priorite\c++\graphe.h
+	"Matrice.h"
+	"Vecteur.h"
+
+1535012690 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\chemin.cpp
+	<algorithm>
+	<iostream>
+	<stdexcept>
+	"AlgorithmePriorite.h"
+
+1535012690 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\donnescarrefour.cpp
+
+1535012690 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\exemples.cpp
+	"DonneesCarrefour.h"
+
+1535012690 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\main.cpp
+	<algorithm>
+	<iostream>
+	"AlgorithmePriorite.h"
+	"DonneesCarrefour.h"
+	"Vecteur.h"
+
+1535012690 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\recherchechemins.cpp
+	<algorithm>
+	"AlgorithmePriorite.h"
+	"DonneesCarrefour.h"
+	"Graphe.h"
+	"Vecteur.h"
+
