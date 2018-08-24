@@ -4,16 +4,16 @@ void Carrefour::loadExemple(int n){
     switch (n){
     case 1:
         // Lignes
-        const LigneDeFeu arrLignes[] = { LigneDeFeu(false, true, 0),
-                                         LigneDeFeu(true, true, 5),
-                                         LigneDeFeu(true, true, 5),
-                                         LigneDeFeu(true, false, 0),
-                                         LigneDeFeu(true, false, 0),
-                                         LigneDeFeu(true, true, 5),
-                                         LigneDeFeu(true, true, 5),
-                                         LigneDeFeu(true, false, 0),
-                                         LigneDeFeu(true, false, 0),
-                                         LigneDeFeu(true, true, 5) };
+        const LigneDeFeu arrLignes[] = { LigneDeFeu(true, true, 0),
+                                         LigneDeFeu(true, true, 0),
+                                         LigneDeFeu(true, true, 0),
+                                         LigneDeFeu(true, true, 0),
+                                         LigneDeFeu(true, true, 0),
+                                         LigneDeFeu(true, true, 0),
+                                         LigneDeFeu(true, true, 0),
+                                         LigneDeFeu(true, true, 0),
+                                         LigneDeFeu(true, true, 0),
+                                         LigneDeFeu(true, true, 0) };
 
         _lignes = Vecteur<LigneDeFeu>(arrLignes, sizeof(arrLignes)/sizeof(arrLignes[0]));
 
@@ -36,18 +36,16 @@ void Carrefour::loadExemple(int n){
                 _interphases.element(i,j) = Interphase(i, j, dureeInterphases[i][j]);
 
         // Demandes Priorite
-        const DemandePriorite arrDemandes[] = { DemandePriorite(13,1),
-                                                DemandePriorite(33,1),
-                                                DemandePriorite(92,1),
-                                                DemandePriorite(25,2),
-                                                DemandePriorite(64,2) };
+        const DemandePriorite arrDemandes[] = { DemandePriorite(40,1),
+                                                DemandePriorite(75,2),
+                                                DemandePriorite(68,1) };
         _demandes =  Vecteur<DemandePriorite>(arrDemandes, sizeof(arrDemandes)/sizeof(arrDemandes[0]) );
 
         // Phase Actuelle
         _phaseActuelle = &_phases[0];
 
         // Temps Ecoulé
-        _tempsEcoule = 5;
+        _tempsEcoule = 25;
 
         break;
     }
