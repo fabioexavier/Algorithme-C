@@ -43,7 +43,8 @@ private:
 
 ResultatLP analyseLP(const Chemin& chemin){
     // INITIALISATION
-    Vecteur<DemandePriorite> demandesPriorite = chemin.carrefour().demandesPriorite();
+    Carrefour carrefour = chemin.carrefour();
+    Vecteur<DemandePriorite> demandesPriorite = carrefour.demandesPriorite();
 
     // Variables X, U et R
     size_t colX = 1,                nX = chemin.size();
@@ -84,10 +85,13 @@ ResultatLP analyseLP(const Chemin& chemin){
     // LIMITES DES VARIABLES
 
     // Variables X
-    double LBPremierePhase = max(chemin.carrefour().tempsEcoule(), chemin.phase(0).dureeMinimale);
-    set_bounds(lp, colX+0, LBPremierePhase, chemin.phase(0).dureeMaximale);
-    for (size_t i = 1; i != nX; ++i)
-        set_bounds(lp, colX+i, chemin.phase(i).dureeMinimale, chemin.phase(i).dureeMaximale);
+//    double LBPremierePhase = max(carrefour.tempsEcoule(), chemin.phase(0).dureeMinimale);
+//    set_bounds(lp, colX+0, LBPremierePhase, chemin.phase(0).dureeMaximale);
+    for (size_t i = 0; i != nX; ++i){
+        double LB = (i == 0) ? max(carrefour.tempsEcoule(), chemin.phase(0).dureeMinimale) : chemin.phase(i).dureeMinimale;
+        double UB = (chemin.phase(i).dureeMaximale > 0) ? chemin.phase(i).dureeMaximale : get_infinite(lp);
+        set_bounds(lp, colX+i, LB, UB);
+    }
 
     // Variables H
     for (size_t i = 0; i != demandesPriorite.size(); ++i){
@@ -142,7 +146,7 @@ ResultatLP analyseLP(const Chemin& chemin){
             // Somme des durées des interphases
             int sommeInterphases = 0;
             for (size_t m = 0; m != P[k][j]; ++m)
-                sommeInterphases += chemin.carrefour().interphase(chemin.phase(m), chemin.phase(m+1) ).duree;
+                sommeInterphases += carrefour.interphase(chemin.phase(m), chemin.phase(m+1) ).duree;
             int rhs;
 
             // Equation 1
@@ -151,7 +155,7 @@ ResultatLP analyseLP(const Chemin& chemin){
                 row.add(colX+m, 1);
             row.add(colR+i, -1);
             row.add(colH[i]+j, M);
-            rhs = demandesPriorite[i].delaiApproche + chemin.carrefour().tempsEcoule() - sommeInterphases + M;
+            rhs = demandesPriorite[i].delaiApproche + carrefour.tempsEcoule() - sommeInterphases + M;
             add_constraintex(lp, row.count(), row.values(), row.cols(), LE, rhs);
 
             // Equation 2
@@ -160,7 +164,7 @@ ResultatLP analyseLP(const Chemin& chemin){
                 row.add(colX+m, 1);
             row.add(colR+i, -1);
             row.add(colH[i]+j, -M);
-            rhs = demandesPriorite[i].delaiApproche + chemin.carrefour().tempsEcoule()
+            rhs = demandesPriorite[i].delaiApproche + carrefour.tempsEcoule()
                     - sommeInterphases - M + chemin.phase(P[k][j]).marge;
             add_constraintex(lp, row.count(), row.values(), row.cols(), GE, rhs);
         }
@@ -186,8 +190,8 @@ ResultatLP analyseLP(const Chemin& chemin){
     }
 
     // Contraintes de max 120s de rouge
-    for (size_t i = 0; i != chemin.carrefour().numLignes(); ++i){
-        if (chemin.carrefour().ligne(i).solicitee && chemin.carrefour().ligne(i).rouge ){
+    for (size_t i = 0; i != carrefour.numLignes(); ++i){
+        if (carrefour.ligne(i).rougeEtSolicitee ){
             int numPhases = 1; // Nombre de phases (fermées) du chemin jusqu'à l'ouverture de la ligne
             int sommeInterphases = 0; // Somme des durées des interphases jusqu'à l'ouverture de la ligne
             int sommeNominales = 0; // Somme des durées nominales des phases hors chemin jusqu'à l'ouverture de la ligne
@@ -195,7 +199,7 @@ ResultatLP analyseLP(const Chemin& chemin){
 
             // Analyse les phases dans le chemin
             for (size_t j = 1; j != chemin.size(); ++j){
-                sommeInterphases += chemin.carrefour().interphase(chemin.phase(j-1), chemin.phase(j) ).duree;
+                sommeInterphases += carrefour.interphase(chemin.phase(j-1), chemin.phase(j) ).duree;
                 if (chemin.phase(j).lignesOuvertes[i]){
                     ouvertureTrouve = true;
                     break;
@@ -209,31 +213,31 @@ ResultatLP analyseLP(const Chemin& chemin){
                 Phase phase1 = chemin.phase(-1);
 
                 // Calcule la phase qui vient immédiatement après la fin du chemin
-                Phase phase2 = chemin.carrefour().phaseSuivante(phase1);
+                Phase phase2 = carrefour.phaseSuivante(phase1);
                 while (!phase2.solicitee)
-                    phase2 = chemin.carrefour().phaseSuivante(phase2);
+                    phase2 = carrefour.phaseSuivante(phase2);
 
-                sommeInterphases += chemin.carrefour().interphase(phase1, phase2).duree;
+                sommeInterphases += carrefour.interphase(phase1, phase2).duree;
 
                 // Analyse la séquence de phases hors chemin jusqu'à l'ouverture de la ligne
                 while (!phase2.lignesOuvertes[i]){
                     phase1 = phase2;
                     do
-                        phase2 = chemin.carrefour().phaseSuivante(phase2);
+                        phase2 = carrefour.phaseSuivante(phase2);
                     while (!phase2.solicitee);
 
-                    sommeInterphases += chemin.carrefour().interphase(phase1, phase2).duree;
+                    sommeInterphases += carrefour.interphase(phase1, phase2).duree;
                     sommeNominales += phase1.dureeNominale;
                 }
             }
 
-                // Ecrit la contrainte
-                row.clear();
-                for (int k = 0; k != numPhases; ++k)
-                    row.add(colX+k, 1);
-                int rhs = 120 - chemin.carrefour().ligne(i).rougeAccumule + chemin.carrefour().tempsEcoule()
-                          - sommeInterphases - sommeNominales;
-                add_constraintex(lp, row.count(), row.values(), row.cols(), LE, rhs);
+            // Ecrit la contrainte
+            row.clear();
+            for (int k = 0; k != numPhases; ++k)
+                row.add(colX+k, 1);
+            int rhs = 120 - carrefour.ligne(i).rougeAccumule + carrefour.tempsEcoule()
+                      - sommeInterphases - sommeNominales;
+            add_constraintex(lp, row.count(), row.values(), row.cols(), LE, rhs);
         }
     }
 
@@ -275,6 +279,7 @@ ResultatLP analyseLP(const Chemin& chemin){
     // RÉSOLUTION
     set_add_rowmode(lp, FALSE);
     set_verbose(lp, IMPORTANT);
+    set_presolve(lp, PRESOLVE_SENSDUALS, get_presolveloops(lp) );
     ResultatLP resultat;
 
 //    write_LP(lp, stdout);
@@ -298,6 +303,13 @@ ResultatLP analyseLP(const Chemin& chemin){
             resultat.retards.push_back(variables[colR+i]);
         // Calcule score final
         resultat.calcScore();
+
+        // Sensibilité
+//        REAL *pDuals, *pRhsLb, *pRhsUb;
+//        get_ptr_sensitivity_rhs(lp, &pDuals, &pRhsLb, &pRhsUb);
+//
+//        for (int i = 0; i != get_Ncolumns(lp); ++i)
+//            cout << i << " " << pDuals[i] << " " << pRhsLb[i] << " " << pRhsUb[i] << " " << endl << endl;
     }
 
     // Supprime les donnés du problème
