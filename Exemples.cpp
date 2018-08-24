@@ -44,7 +44,7 @@ void Carrefour::loadExemple(int n){
         _demandes =  Vecteur<DemandePriorite>(arrDemandes, sizeof(arrDemandes)/sizeof(arrDemandes[0]) );
 
         // Phase Actuelle
-        _phaseActuelle = &_phases[0];
+        _phaseActuelle = &_phases[2];
 
         // Temps Ecoulé
         _tempsEcoule = 5;

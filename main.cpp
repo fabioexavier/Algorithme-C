@@ -36,8 +36,11 @@ int main(){
 
     Vecteur<Chemin>::const_iterator iMeilleurChemin = iCheminsFaisables[indexMin];
 
-    cout << endl << "Meilleur Chemin: " << endl << *iMeilleurChemin << endl << *iterMin << endl
-         << "Chemins Analyses: " << cheminsPossibles.size() << endl << endl;
+    cout << endl << "Meilleur Chemin: " << endl << endl
+         << *iMeilleurChemin << endl << endl
+         << *iterMin << endl << endl
+         << "Chemins Analyses: " << cheminsPossibles.size() << endl << endl
+         << "Temps: " << endl << endl;
 
     return 0;
 }
