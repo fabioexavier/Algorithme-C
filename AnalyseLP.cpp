@@ -84,10 +84,11 @@ ResultatLP analyseLP(const Chemin& chemin){
     // LIMITES DES VARIABLES
 
     // Variables X
-    double LBPremierePhase = max(chemin.carrefour().tempsEcoule(), chemin.phase(0).dureeMinimale);
-    set_bounds(lp, colX+0, LBPremierePhase, chemin.phase(0).dureeMaximale);
-    for (size_t i = 1; i != nX; ++i)
-        set_bounds(lp, colX+i, chemin.phase(i).dureeMinimale, chemin.phase(i).dureeMaximale);
+    for (size_t i = 0; i != nX; ++i){
+        double lowerBound = (i == 0) ? max(chemin.carrefour().tempsEcoule(), chemin.phase(i).dureeMinimale) : chemin.phase(i).dureeMinimale;
+        double upperBound = (chemin.phase(i).dureeMaximale >= 0) ? chemin.phase(i).dureeMaximale : get_infinite(lp);
+        set_bounds(lp, colX+i, lowerBound, upperBound);
+    }
 
     // Variables H
     for (size_t i = 0; i != demandesPriorite.size(); ++i){
@@ -187,7 +188,8 @@ ResultatLP analyseLP(const Chemin& chemin){
 
     // Contraintes de max 120s de rouge
     for (size_t i = 0; i != chemin.carrefour().numLignes(); ++i){
-        if (chemin.carrefour().ligne(i).solicitee && chemin.carrefour().ligne(i).rouge ){
+        // Si la ligne est fermée et solicitée
+        if (chemin.carrefour().ligne(i) >= 0){
             int numPhases = 1; // Nombre de phases (fermées) du chemin jusqu'à l'ouverture de la ligne
             int sommeInterphases = 0; // Somme des durées des interphases jusqu'à l'ouverture de la ligne
             int sommeNominales = 0; // Somme des durées nominales des phases hors chemin jusqu'à l'ouverture de la ligne
@@ -231,7 +233,7 @@ ResultatLP analyseLP(const Chemin& chemin){
                 row.clear();
                 for (int k = 0; k != numPhases; ++k)
                     row.add(colX+k, 1);
-                int rhs = 120 - chemin.carrefour().ligne(i).rougeAccumule + chemin.carrefour().tempsEcoule()
+                int rhs = 120 - chemin.carrefour().ligne(i) + chemin.carrefour().tempsEcoule()
                           - sommeInterphases - sommeNominales;
                 add_constraintex(lp, row.count(), row.values(), row.cols(), LE, rhs);
         }

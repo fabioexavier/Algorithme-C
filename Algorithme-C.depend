@@ -56,3 +56,58 @@
 	"Graphe.h"
 	"Vecteur.h"
 
+1535015576 source:c:\users\fábio\documents\fabio\france\fareco\algorithmepriorite\algorithme-c\chemin.cpp
+	<algorithm>
+	<iostream>
+	<stdexcept>
+	"AlgorithmePriorite.h"
+
+1535015576 c:\users\fábio\documents\fabio\france\fareco\algorithmepriorite\algorithme-c\algorithmepriorite.h
+	<iostream>
+	"DonneesCarrefour.h"
+	"Vecteur.h"
+
+1535450141 c:\users\fábio\documents\fabio\france\fareco\algorithmepriorite\algorithme-c\donneescarrefour.h
+	<iostream>
+	<string>
+	"Matrice.h"
+	"Graphe.h"
+	"Vecteur.h"
+
+1535015576 c:\users\fábio\documents\fabio\france\fareco\algorithmepriorite\algorithme-c\matrice.h
+	"Vecteur.h"
+
+1535015576 c:\users\fábio\documents\fabio\france\fareco\algorithmepriorite\algorithme-c\vecteur.h
+	<iostream>
+	<stdexcept>
+
+1535444873 c:\users\fábio\documents\fabio\france\fareco\algorithmepriorite\algorithme-c\graphe.h
+	"Matrice.h"
+	"Vecteur.h"
+
+1535015576 source:c:\users\fábio\documents\fabio\france\fareco\algorithmepriorite\algorithme-c\recherchechemins.cpp
+	<algorithm>
+	"AlgorithmePriorite.h"
+	"DonneesCarrefour.h"
+	"Graphe.h"
+	"Vecteur.h"
+
+1535444873 source:c:\users\fábio\documents\fabio\france\fareco\algorithmepriorite\algorithme-c\main.cpp
+	<algorithm>
+	<iostream>
+	"AlgorithmePriorite.h"
+	"DonneesCarrefour.h"
+	"Vecteur.h"
+
+1535450808 source:c:\users\fábio\documents\fabio\france\fareco\algorithmepriorite\algorithme-c\analyselp.cpp
+	<algorithm>
+	<iostream>
+	<stdexcept>
+	<stdio.h>
+	"AlgorithmePriorite.h"
+	"Vecteur.h"
+	"lp_lib.h"
+
+1535453135 source:c:\users\fábio\documents\fabio\france\fareco\algorithmepriorite\algorithme-c\exemples.cpp
+	"DonneesCarrefour.h"
+

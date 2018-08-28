@@ -122,7 +122,7 @@ public:
 
     void loadExemple(int);
 
-    const LigneDeFeu& ligne(size_t i) const { return _lignes[i]; }
+    const int& ligne(size_t i) const { return _lignes[i]; }
     size_t numLignes() const { return _lignes.size(); }
 
     const Phase& phase(size_t i) const { return _phases[i]; }
@@ -138,7 +138,7 @@ public:
     int tempsEcoule() const { return _tempsEcoule; }
 
 private:
-    Vecteur<LigneDeFeu> _lignes;
+    Vecteur<int> _lignes;
     Vecteur<Phase> _phases;
     Matrice<Interphase> _interphases;
     Vecteur<DemandePriorite> _demandes;
