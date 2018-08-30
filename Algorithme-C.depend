@@ -1,60 +1,67 @@
 # depslib dependency file v1.0
-1535012690 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\analyselp.cpp
+1535642319 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\analyselp.cpp
 	<algorithm>
 	<iostream>
+	<numeric>
 	<stdexcept>
-	<stdio.h>
+	<vector>
 	"AlgorithmePriorite.h"
-	"Vecteur.h"
+	"AuxVector.h"
 	"lp_lib.h"
 
-1535012690 c:\users\felnecave\documents\fabio\algorithme priorite\c++\algorithmepriorite.h
+1535641440 c:\users\felnecave\documents\fabio\algorithme priorite\c++\algorithmepriorite.h
 	<iostream>
+	<numeric>
+	<vector>
 	"DonneesCarrefour.h"
-	"Vecteur.h"
+	"AuxVector.h"
 
-1535012690 c:\users\felnecave\documents\fabio\algorithme priorite\c++\donneescarrefour.h
+1535639467 c:\users\felnecave\documents\fabio\algorithme priorite\c++\donneescarrefour.h
 	<iostream>
 	<string>
+	<vector>
 	"Matrice.h"
 	"Graphe.h"
-	"Vecteur.h"
 
-1535012690 c:\users\felnecave\documents\fabio\algorithme priorite\c++\matrice.h
-	"Vecteur.h"
+1535640915 c:\users\felnecave\documents\fabio\algorithme priorite\c++\matrice.h
+	<vector>
 
 1535012690 c:\users\felnecave\documents\fabio\algorithme priorite\c++\vecteur.h
 	<iostream>
 	<stdexcept>
 
-1535097285 c:\users\felnecave\documents\fabio\algorithme priorite\c++\graphe.h
+1535642199 c:\users\felnecave\documents\fabio\algorithme priorite\c++\graphe.h
+	<iostream>
+	<vector>
 	"Matrice.h"
-	"Vecteur.h"
 
-1535012690 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\chemin.cpp
+1535641948 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\chemin.cpp
 	<algorithm>
 	<iostream>
 	<stdexcept>
+	<vector>
 	"AlgorithmePriorite.h"
 
 1535012690 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\donnescarrefour.cpp
 
-1535096517 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\exemples.cpp
+1535637082 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\exemples.cpp
+	<vector>
 	"DonneesCarrefour.h"
 
-1535096552 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\main.cpp
+1535639432 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\main.cpp
 	<algorithm>
 	<iostream>
+	<vector>
 	"AlgorithmePriorite.h"
 	"DonneesCarrefour.h"
-	"Vecteur.h"
 
-1535012690 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\recherchechemins.cpp
+1535640879 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\recherchechemins.cpp
 	<algorithm>
+	<vector>
 	"AlgorithmePriorite.h"
+	"AuxVector.h"
 	"DonneesCarrefour.h"
 	"Graphe.h"
-	"Vecteur.h"
 
 1535015576 source:c:\users\fábio\documents\fabio\france\fareco\algorithmepriorite\algorithme-c\chemin.cpp
 	<algorithm>
@@ -110,4 +117,8 @@
 
 1535453135 source:c:\users\fábio\documents\fabio\france\fareco\algorithmepriorite\algorithme-c\exemples.cpp
 	"DonneesCarrefour.h"
+
+1535642296 c:\users\felnecave\documents\fabio\algorithme priorite\c++\auxvector.h
+	<algorithm>
+	<vector>
 

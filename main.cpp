@@ -1,13 +1,14 @@
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 #include "AlgorithmePriorite.h"
 #include "DonneesCarrefour.h"
-#include "Vecteur.h"
 
 using std::cout;
 using std::endl;
 using std::min_element;
+using std::vector;
 
 int main(){
     // Charge un exemple de carrefour
@@ -15,13 +16,14 @@ int main(){
     carrefour.loadExemple(1);
 
     // Calcule les chemins possibles
-    Vecteur<Chemin> cheminsPossibles = rechercheChemins(carrefour);
+    vector<Chemin> cheminsPossibles;
+    rechercheChemins(carrefour, cheminsPossibles);
 
     // Analyse chacun des chemins avec la LP
-    Vecteur< Vecteur<Chemin>::const_iterator > iCheminsFaisables;
-    Vecteur<ResultatLP> resultatsFaisables;
+    vector< vector<Chemin>::const_iterator > iCheminsFaisables;
+    vector<ResultatLP> resultatsFaisables;
 
-    for (Vecteur<Chemin>::const_iterator iChemin=cheminsPossibles.begin(); iChemin!=cheminsPossibles.end(); ++iChemin){
+    for (vector<Chemin>::const_iterator iChemin=cheminsPossibles.begin(); iChemin!=cheminsPossibles.end(); ++iChemin){
         ResultatLP resultat = analyseLP(*iChemin);
         if (resultat){
             iCheminsFaisables.push_back(iChemin);
@@ -31,10 +33,10 @@ int main(){
     }
 
     // Trouve le meilleur chemin
-    Vecteur<ResultatLP>::const_iterator iterMin = min_element(resultatsFaisables.begin(), resultatsFaisables.end(), ResultatLP::compare);
+    vector<ResultatLP>::const_iterator iterMin = min_element(resultatsFaisables.begin(), resultatsFaisables.end(), ResultatLP::compare);
     size_t indexMin = iterMin - resultatsFaisables.begin();
 
-    Vecteur<Chemin>::const_iterator iMeilleurChemin = iCheminsFaisables[indexMin];
+    vector<Chemin>::const_iterator iMeilleurChemin = iCheminsFaisables[indexMin];
 
     cout << endl << "Meilleur Chemin: " << endl << endl
          << *iMeilleurChemin << endl << endl

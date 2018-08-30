@@ -1,12 +1,14 @@
 #include <algorithm>
 #include <iostream>
 #include <stdexcept>
+#include <vector>
 
 #include "AlgorithmePriorite.h"
 
 using std::domain_error;
 using std::find;
 using std::ostream;
+using std::vector;
 
 Chemin::Chemin(const Carrefour& c) : _pCarrefour(&c){
     Phase origine = c.phaseActuelle();
@@ -15,11 +17,17 @@ Chemin::Chemin(const Carrefour& c) : _pCarrefour(&c){
     incrementeCode(origine.code);
 }
 
+const Phase& Chemin::phase(int n) const{
+    if (n >= 0 && (unsigned) n < _phases.size() )
+        return _phases[n];
+    else if (n < 0 && n >= (int) (-_phases.size()) )
+        return _phases[_phases.size()+n];
+    else
+        throw domain_error("Indice de la phase hors limite");
+}
+
 int Chemin::comptageCode(int c) const {
     size_t code = c;
-
-    if (code >= _comptageCodes.MAX_SIZE)
-        throw domain_error("Code hors limite");
 
     if (code >= _comptageCodes.size())
         return 0;
@@ -30,14 +38,8 @@ int Chemin::comptageCode(int c) const {
 int Chemin::incrementeCode(int c){
     size_t code = c;
 
-    if (code >= _comptageCodes.MAX_SIZE)
-        throw domain_error("Code hors limite");
-
     if (code >= _comptageCodes.size() ){
-        size_t oldSize = _comptageCodes.size();
-        _comptageCodes.setSize(code+1);
-        for (size_t i=oldSize; i<code+1; i++)
-            _comptageCodes[i] = 0;
+        _comptageCodes.resize(code+1, 0);
     }
     return ++_comptageCodes[code];
 }
@@ -51,7 +53,7 @@ ostream& operator<<(ostream& os, const Chemin& c){
 
 void Chemin::push_back(const Phase& phase){
     _phases.push_back(phase);
-    _sommeMin += _pCarrefour->interphase(_phases[-2], _phases[-1]).duree;
+    _sommeMin += _pCarrefour->interphase(this->phase(-2), this->phase(-1) ).duree;
     _sommeMin += phase.dureeMinimale;
     incrementeCode(phase.code);
 }
@@ -60,9 +62,9 @@ void Chemin::push_back(const Phase& phase){
 bool Chemin::valide() const {
     bool boolDerniere = false;
     bool boolComptage = true;
-    Vecteur<DemandePriorite> demandesPriorite = this->carrefour().demandesPriorite();
+    vector<DemandePriorite> demandesPriorite = this->carrefour().demandesPriorite();
 
-    for (Vecteur<DemandePriorite>::const_iterator demande=demandesPriorite.begin();
+    for (vector<DemandePriorite>::const_iterator demande=demandesPriorite.begin();
                                                   demande!=demandesPriorite.end(); ++demande){
         // Si la dernière phase a été solicitée, le chemin est valide
         if (phase(-1).code == demande->code)
@@ -79,7 +81,7 @@ bool Chemin::valide() const {
 
 bool Chemin::transitionPossible(const Phase& phase) const{
     Carrefour carrefour = this->carrefour();
-    Vecteur<DemandePriorite> demandesPriorite = carrefour.demandesPriorite();
+    vector<DemandePriorite> demandesPriorite = carrefour.demandesPriorite();
 
     bool transitionPossible = true;
     if (phase.escamotable){
@@ -97,7 +99,7 @@ bool Chemin::transitionPossible(const Phase& phase) const{
             // Admet une phase en plus si la première phase est PEE et a le même code
             int maxPhases = this->phase(0).exclusive && (this->phase(0).code == code) ? 1 : 0;
             // +1 pour chaque demande avec le même code
-            for (Vecteur<DemandePriorite>::const_iterator demande=demandesPriorite.begin();
+            for (vector<DemandePriorite>::const_iterator demande=demandesPriorite.begin();
                                                           demande!=demandesPriorite.end(); ++demande){
                 if (demande->code == code)
                     ++maxPhases;

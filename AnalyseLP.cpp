@@ -1,23 +1,24 @@
 #include <algorithm>
 #include <iostream>
+#include <numeric>
 #include <stdexcept>
-
-#include <stdio.h>
+#include <vector>
 
 #include "AlgorithmePriorite.h"
-#include "Vecteur.h"
-
+#include "AuxVector.h"
 #include "lp_lib.h"
 
+using std::accumulate;
 using std::cout;
 using std::domain_error;
 using std::endl;
 using std::max;
 using std::runtime_error;
+using std::vector;
 
 class RowLP{
 public:
-    static const size_t MAX_SIZE = ResultatLP::MAX_SIZE;
+    static const size_t MAX_SIZE = 100;
 
     RowLP() : _count(0) {}
 
@@ -43,7 +44,7 @@ private:
 
 ResultatLP analyseLP(const Chemin& chemin){
     // INITIALISATION
-    Vecteur<DemandePriorite> demandesPriorite = chemin.carrefour().demandesPriorite();
+    vector<DemandePriorite> demandesPriorite = chemin.carrefour().demandesPriorite();
 
     // Variables X, U et R
     size_t colX = 1,                nX = chemin.size();
@@ -51,7 +52,7 @@ ResultatLP analyseLP(const Chemin& chemin){
     size_t colR = colU + nU,        nR = demandesPriorite.size();
 
     // Partition des phases par rapport aux codes
-    Vecteur<Vecteur<size_t> > P(chemin.numCodes() );
+    vector<vector<size_t> > P(chemin.numCodes() );
 
     for (int k = 0; k != chemin.numCodes(); ++k)
         for (size_t j = 0; j != chemin.size(); ++j)
@@ -59,7 +60,7 @@ ResultatLP analyseLP(const Chemin& chemin){
                 P[k].push_back(j);
 
     // Variables H
-    Vecteur<size_t> colH(demandesPriorite.size() ),     nH(demandesPriorite.size() );
+    vector<size_t> colH(demandesPriorite.size() ),     nH(demandesPriorite.size() );
     colH[0] = colR + nR;
     for (size_t i = 0; i != demandesPriorite.size(); ++i){
         int k = demandesPriorite[i].code;
@@ -69,10 +70,7 @@ ResultatLP analyseLP(const Chemin& chemin){
     }
 
     // Nombre total de variables
-    size_t nCols = nX + nU + nR + nH.somme();
-
-    if (nCols > ResultatLP::MAX_SIZE)
-        throw domain_error("Nombre de variables du LP dépasse le maximum");
+    size_t nCols = nX + nU + nR + accumulate(nH.begin(), nH.end(), 0);
 
     // Création du problème
     lprec *lp;
@@ -177,7 +175,7 @@ ResultatLP analyseLP(const Chemin& chemin){
         if (chemin.phase(p).exclusive || p == chemin.size()-1){
             row.clear();
             int k = chemin.phase(p).code;
-            size_t j = P[k].index(p);
+            size_t j = index(p, P[k]);
             for (size_t i = 0; i != demandesPriorite.size(); ++i){
                 if (demandesPriorite[i].code == k)
                     row.add(colH[i]+j, 1);

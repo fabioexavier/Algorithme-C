@@ -2,19 +2,21 @@
 #define ALGORITHME_PRIORITE_H
 
 #include <iostream>
+#include <numeric>
+#include <vector>
 
 #include "DonneesCarrefour.h"
-#include "Vecteur.h"
+#include "AuxVector.h"
 
 // Classes
 class Chemin{
 public:
-    typedef Vecteur<Phase>::const_iterator const_iterator;
+    typedef std::vector<Phase>::const_iterator const_iterator;
 
     Chemin() {}
     explicit Chemin(const Carrefour&);
 
-    const Phase& phase(int n) const { return _phases[n]; }
+    const Phase& phase(int) const;
     int sommeMin() const { return _sommeMin; }
     int comptageCode(int) const;
     int incrementeCode(int);
@@ -31,24 +33,26 @@ public:
     bool transitionPossible(const Phase&) const;
 
 private:
-    Vecteur<Phase> _phases;
+    std::vector<Phase> _phases;
     int _sommeMin;
-    Vecteur<int> _comptageCodes;
+    std::vector<int> _comptageCodes;
     const Carrefour* _pCarrefour;
 };
 std::ostream& operator<<(std::ostream&, const Chemin&);
 
 struct ResultatLP{
 public:
-    static const size_t MAX_SIZE = Vecteur<int>::MAX_SIZE;
     bool optimumTrouve;
-    Vecteur<double> durees;
-    Vecteur<double> deviations;
-    Vecteur<double> retards;
+    std::vector<double> durees;
+    std::vector<double> deviations;
+    std::vector<double> retards;
     double score;
 
     ResultatLP() : optimumTrouve(false), score(-1) {}
-    void calcScore() { score = deviations.somme()+100*retards.somme(); }
+    void calcScore(){
+        score = std::accumulate(deviations.begin(), deviations.end(), 0.0) +
+                100*std::accumulate(retards.begin(), retards.end(), 0.0);
+    }
 
     operator bool(){ return optimumTrouve; }
     static bool compare(const ResultatLP& r1, const ResultatLP& r2) { return r1.score < r2.score; }
@@ -62,15 +66,13 @@ inline std::ostream& operator<<(std::ostream& os, const ResultatLP& resultat){
     }
 
 
-
-
 // Fonctions Principales
-Vecteur<Chemin> rechercheChemins(const Carrefour&);
+void rechercheChemins(const Carrefour&, std::vector<Chemin>&);
 ResultatLP analyseLP(const Chemin&);
 
 // Fonctions Auxiliaires
 Graphe<Phase> calcGraphe(const Carrefour&);
-void rechercheRecursive(const Graphe<Phase>&, const Chemin&, Vecteur<Chemin>&);
+void rechercheRecursive(const Graphe<Phase>&, const Chemin&, std::vector<Chemin>&);
 bool finDeBranche(const Graphe<Phase>&, const Chemin&);
 
 #endif // ALGORITHME_PRIORITE_H

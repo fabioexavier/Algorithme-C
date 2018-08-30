@@ -3,15 +3,15 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "Matrice.h"
 #include "Graphe.h"
-#include "Vecteur.h"
 
 // Phase
 struct Phase{
     int numero;
-    Vecteur<bool> lignesOuvertes;
+    std::vector<bool> lignesOuvertes;
     int dureeMinimale;
     int dureeNominale;
     int dureeMaximale;
@@ -112,7 +112,7 @@ public:
     Carrefour() : _phaseActuelle(0),
                   _tempsEcoule(0) {}
 
-    Carrefour(const Vecteur<Phase>& p, const Matrice<Interphase>& mi, const Vecteur<DemandePriorite>& d,
+    Carrefour(const std::vector<Phase>& p, const Matrice<Interphase>& mi, const std::vector<DemandePriorite>& d,
               const Phase* pa, int te) :
               _phases(p),
               _interphases(mi),
@@ -132,16 +132,16 @@ public:
     const Interphase& interphase(size_t i, size_t j) const { return _interphases.element(i,j); }
     const Interphase& interphase(const Phase& p1, const Phase& p2) const { return interphase(p1.numero, p2.numero); }
 
-    const Vecteur<DemandePriorite>& demandesPriorite() const { return _demandes; }
+    const std::vector<DemandePriorite>& demandesPriorite() const { return _demandes; }
 
     const Phase& phaseActuelle() const { return *_phaseActuelle; }
     int tempsEcoule() const { return _tempsEcoule; }
 
 private:
-    Vecteur<int> _lignes;
-    Vecteur<Phase> _phases;
+    std::vector<int> _lignes;
+    std::vector<Phase> _phases;
     Matrice<Interphase> _interphases;
-    Vecteur<DemandePriorite> _demandes;
+    std::vector<DemandePriorite> _demandes;
     const Phase *_phaseActuelle;
     int _tempsEcoule;
 };

@@ -1,4 +1,7 @@
+#include <vector>
 #include "DonneesCarrefour.h"
+
+using std::vector;
 
 void Carrefour::loadExemple(int n){
     switch (n){
@@ -15,16 +18,16 @@ void Carrefour::loadExemple(int n){
                                   -1,
                                    5 };
 
-        _lignes = Vecteur<int>(arrLignes, sizeof(arrLignes)/sizeof(arrLignes[0]));
+        _lignes = vector<int>(arrLignes, arrLignes+sizeof(arrLignes)/sizeof(arrLignes[0]));
 
         // Phases
-        // Numero, lignes, min, nom, max, escamotable, code, exclusive solicitee, marge, intervalle
+        // Numero, lignes, min, nom, max, escamotable, code, exclusive, solicitee, marge, intervalle
         const Phase arrPhases[] = { Phase(0, "FFFTTFFTTF", 14, 41, 60, false, 2, false, true, 4, -1),
                                     Phase(1, "TTFFFFFFFT", 4, 4, 30, true, 1, true, false, 4, 15),
                                     Phase(2, "FTTFFTTFFT", 11, 15, 40, false, 0, false, true, 4, -1),
                                     Phase(3, "TFFTFFFTFF", 4, 4, 30, true, 1, true, false, 4, 15) };
         const size_t numPhases = sizeof(arrPhases)/sizeof(arrPhases[0]);
-        _phases =  Vecteur<Phase>(arrPhases, numPhases);
+        _phases =  vector<Phase>(arrPhases, arrPhases+numPhases);
 
         // Interphases
         const unsigned int dureeInterphases[numPhases][numPhases] = { {0, 7, 7, 5},
@@ -38,7 +41,7 @@ void Carrefour::loadExemple(int n){
 
         // Demandes Priorite
         const DemandePriorite arrDemandes[] = { DemandePriorite(130,1) };
-        _demandes =  Vecteur<DemandePriorite>(arrDemandes, sizeof(arrDemandes)/sizeof(arrDemandes[0]) );
+        _demandes =  vector<DemandePriorite>(arrDemandes, arrDemandes+sizeof(arrDemandes)/sizeof(arrDemandes[0]) );
 
         // Phase Actuelle
         _phaseActuelle = &_phases[0];

@@ -1,18 +1,18 @@
 #ifndef MATRICE_H
 #define MATRICE_H
 
-#include "Vecteur.h"
+#include <vector>
 
 template<class T>
 class Matrice{
 public:
-    typedef typename Vecteur<T>::iterator iterator;
-    typedef typename Vecteur<T>::const_iterator const_iterator;
+    typedef typename std::vector<T>::iterator iterator;
+    typedef typename std::vector<T>::const_iterator const_iterator;
 
     Matrice() : _rows(0), _cols(0) {}
-    Matrice(size_t rows, size_t cols) : _rows(rows), _cols(cols) { initMatrice(); }
+    Matrice(size_t rows, size_t cols) : _rows(rows), _cols(cols), _elements(rows*cols) {}
     Matrice(size_t rows, size_t cols, const T& value) : _rows(rows), _cols(cols),
-                                                              _elements(rows*cols, value) { initMatrice(); }
+                                                              _elements(rows*cols, value) {}
 
     iterator begin() { return _elements.begin(); }
     iterator end() { return _elements.end(); }
@@ -27,14 +27,12 @@ public:
 
 private:
     size_t _rows, _cols;
-    Vecteur<T> _elements;
-
-    void initMatrice();
+    std::vector<T> _elements;
 };
 
 template<class T>
 std::ostream& operator<<(std::ostream& os, const Matrice<T>& mat){
-    typename Matrice<T>::size_type n = 0;
+    size_t n = 0;
     for (typename Matrice<T>::const_iterator iter=mat.begin(); iter!=mat.end(); ++iter){
         os << *iter << " ";
         ++n;
@@ -59,16 +57,6 @@ const T& Matrice<T>::element(size_t i, size_t j) const{
         return _elements[i*_cols + j];
     else
         throw std::domain_error("Indice de la matrice hors limite");
-}
-
-template<class T>
-void Matrice<T>::initMatrice(){
-    size_t numElements = _rows*_cols;
-    if (numElements > Vecteur<T>::MAX_SIZE)
-        throw std::domain_error("Nombre d'elements depasse taille max de la matrice");
-    else{
-        _elements.setSize(numElements);
-    }
 }
 
 #endif // MATRICE_H
