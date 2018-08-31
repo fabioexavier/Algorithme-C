@@ -16,7 +16,7 @@
 	"DonneesCarrefour.h"
 	"AuxVector.h"
 
-1535639467 c:\users\felnecave\documents\fabio\algorithme priorite\c++\donneescarrefour.h
+1535704447 c:\users\felnecave\documents\fabio\algorithme priorite\c++\donneescarrefour.h
 	<iostream>
 	<string>
 	<vector>
@@ -44,18 +44,26 @@
 
 1535012690 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\donnescarrefour.cpp
 
-1535637082 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\exemples.cpp
+1535718574 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\exemples.cpp
+	<fstream>
+	<iostream>
+	<sstream>
+	<stdexcept>
+	<string>
 	<vector>
+	"AuxVector.h"
 	"DonneesCarrefour.h"
+	"Matrice.h"
 
-1535639432 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\main.cpp
+1535719983 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\main.cpp
 	<algorithm>
+	<chrono>
 	<iostream>
 	<vector>
 	"AlgorithmePriorite.h"
 	"DonneesCarrefour.h"
 
-1535640879 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\recherchechemins.cpp
+1535704526 source:c:\users\felnecave\documents\fabio\algorithme priorite\c++\recherchechemins.cpp
 	<algorithm>
 	<vector>
 	"AlgorithmePriorite.h"

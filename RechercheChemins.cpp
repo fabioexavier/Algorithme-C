@@ -52,8 +52,6 @@ Graphe<Phase> calcGraphe(const Carrefour& carrefour){
     }
 
     // Crée l'objet graphe
-    cout << sommets << endl;
-    cout << matriceTransitions << endl;
     return Graphe<Phase>(sommets, matriceTransitions);
 }
 

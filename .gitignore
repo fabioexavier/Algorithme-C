@@ -14,3 +14,11 @@ Algorithme-C.layout
 C++.zip
 Algorithme-C.layout
 Algorithme-C.depend
+Algorithme-C.depend
+Algorithme-C.layout
+bin/Release/Algorithme-C.exe
+obj/Release/AnalyseLP.o
+obj/Release/Chemin.o
+obj/Release/Exemples.o
+obj/Release/main.o
+obj/Release/RechercheChemins.o

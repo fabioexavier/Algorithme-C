@@ -1,7 +1,154 @@
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
+#include <string>
 #include <vector>
-#include "DonneesCarrefour.h"
 
+#include "AuxVector.h"
+#include "DonneesCarrefour.h"
+#include "Matrice.h"
+
+using std::cout;
+using std::endl;
+using std::ifstream;
+using std::istream;
+using std::istringstream;
+using std::runtime_error;
+using std::string;
 using std::vector;
+
+bool char2bool(char c){
+        switch(c){
+        case 'T':
+            return true;
+        case 'F':
+            return false;
+        default:
+            throw runtime_error("Charactere invalide dans la convertion char2bool");
+        }
+    }
+
+istream& operator>>(istream& is, Phase& phase){
+    is >> phase.numero;
+
+    string s;
+    is >> s;
+    for (string::const_iterator iter = s.begin(); iter != s.end(); ++iter)
+        phase.lignesOuvertes.push_back(char2bool(*iter) );
+
+    is >> phase.dureeMinimale >> phase.dureeNominale >> phase.dureeMaximale;
+
+    char c;
+
+    is >> c;
+    phase.escamotable = char2bool(c);
+
+    is >> phase.code;
+
+    is >> c;
+    phase.exclusive = char2bool(c);
+
+    is >> c;
+    phase.solicitee = char2bool(c);
+
+    is >> phase.marge >> phase.intervalle;
+
+    return is;
+}
+
+void Carrefour::loadFile(const char* fileName){
+    ifstream file(fileName);
+    if (file.is_open() ){
+        string line;
+        istringstream iss;
+
+        while (getline(file, line) ){
+            if (line == "<lignes>"){
+                _lignes.clear();
+                getline(file, line);
+                iss.clear();
+                iss.str(line);
+
+                int n;
+                while(iss >> n)
+                    _lignes.push_back(n);
+
+                getline(file, line); // </lignes>
+            }
+
+            if (line == "<phases>"){
+                _phases.clear();
+                getline(file, line);
+                while (line != "</phases>"){
+                    iss.clear();
+                    iss.str(line);
+
+                    Phase phase;
+                    iss >> phase;
+                    _phases.push_back(phase);
+                    getline(file, line);
+                }
+            }
+
+            if (line == "<interphases>"){
+                _interphases = Matrice<Interphase>(numPhases(), numPhases());
+                for (size_t i = 0; i != numPhases(); ++i){
+                    getline(file, line);
+                    iss.clear();
+                    iss.str(line);
+
+                    for (size_t j = 0; j != numPhases(); ++j){
+                        Interphase interphase;
+                        interphase.origine = i;
+                        interphase.destination = j;
+                        iss >> interphase.duree;
+                        _interphases.element(i,j) = interphase;
+                    }
+                }
+                getline(file, line); // </interphases>
+            }
+
+            if (line == "<demandes>"){
+                _demandes.clear();
+                getline(file, line);
+                while (line != "</demandes>"){
+                    iss.clear();
+                    iss.str(line);
+
+                    DemandePriorite demande;
+                    iss >> demande.delaiApproche >> demande.code;
+                    _demandes.push_back(demande);
+                    getline(file, line);
+                }
+            }
+
+            if (line == "<actuelle>"){
+                getline(file, line);
+                iss.clear();
+                iss.str(line);
+
+                int numPhaseActuelle;
+                iss >> numPhaseActuelle >> _tempsEcoule;
+                _phaseActuelle = &_phases[numPhaseActuelle];
+            }
+
+        }
+    }
+    else
+        throw runtime_error("Le fichier n'existe pas.");
+}
+
+
+
+
+
+
+
+
+
+
+
 
 void Carrefour::loadExemple(int n){
     switch (n){

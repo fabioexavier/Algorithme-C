@@ -121,6 +121,7 @@ public:
               _tempsEcoule(te) {}
 
     void loadExemple(int);
+    void loadFile(const char*);
 
     const int& ligne(size_t i) const { return _lignes[i]; }
     size_t numLignes() const { return _lignes.size(); }
